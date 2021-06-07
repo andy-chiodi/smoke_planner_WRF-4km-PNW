@@ -13,8 +13,8 @@ the PyFerret script `main346x265.jnl` is meant for the original, pre 18 October 
 ## Step 1. Process the archived WRF model output data
 Prerequesites
 
--the wrf output data files
--python script `wrf.py`
+-The wrf output data files
+-Python script `wrf.py`
 -Pyferret scripts:
   -`main.jnl` [`main346x265.jnl`]   loops though list of days and hours, loading an uncompressed WRF data file and calling recipe.jnl, vi.jnl
   -`recipe.jnl` defines variables necessary for fire-weather (e.g. relative humidity, virtual potential temperature) based on saved-out WRF variables
