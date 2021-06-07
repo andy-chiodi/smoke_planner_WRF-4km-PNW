@@ -14,7 +14,8 @@ the PyFerret script `main346x265.jnl` is meant for the original, pre 18 October 
 Prerequesites
 
 - The wrf output data files
-- Python script `wrf.py`
+- Python script `wrf.py`.  example linux command line usage `python wrf.py wrf_2018_days.list hours.list main.jnl`
+   
 - Pyferret scripts:
   - `main.jnl` [`main346x265.jnl`]   loops though list of days and hours, loading an uncompressed WRF data file and calling recipe.jnl, vi.jnl
   - `recipe.jnl` defines variables necessary for fire-weather (e.g. relative humidity, virtual potential temperature) based on saved-out WRF variables
