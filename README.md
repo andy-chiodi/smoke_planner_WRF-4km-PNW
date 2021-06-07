@@ -23,7 +23,7 @@ Prerequesites
   -`vi.jnl` [`vi_346x265.jnl`] calculates mixing height, transport wind and ventilation index based on variables provided by WRF or defined by `recipe.jnl`
   -`tc.jnl` a script needed to asign a datetime to each hour of processed data (enables time aggregation in a later step)
 
-- Other files:
+- Other files: 
   - *list_of_hours*  Text file with the names of the forecast hours you want to process on separate lines, such as
 ```
 f12
