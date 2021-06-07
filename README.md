@@ -11,7 +11,8 @@ the PyFerret script `main346x265.jnl` is meant for the original, pre 18 October 
 -Typically, these scripts are executed in Python from a command line, wherein the PyFerret scripts are executed as a pseudo-python module.  For example: typing the following in a command line `python wrf.py daylist hourlist main.jnl` will run the script `main.jnl` over each day and hour listed in the daylist and hourlst files (see next step for more information)
 
 ## Step 1. Process the archived WRF model output data
-Prerequesites:
+Prerequesites
+
 -the wrf output data files
 -python script `wrf.py`
 -Pyferret scripts:
@@ -20,5 +21,10 @@ Prerequesites:
   -`vi.jnl` [`vi_346x265.jnl`] calculates mixing height, transport wind and ventilation index based on variables provided by WRF or defined by `recipe.jnl`
   -`tc.jnl` a script needed to asign a datetime to each hour of processed data (enables time aggregation in a later step)
 - Other files:
-  - list of hours (e.g., file called *hours.list* with the names of the forecast hours you want to process ```f12 f13 f14 ... ``` on separate lines
-  - list of days (e.g., file called *wrf_2010_days.list* with dates you want to process on each line, in the form ``` 2010010100 2010010200 2010010300```
+  - list_of_hours (text file with the names of the forecast hours you want to process on separate lines, such as
+```
+f12
+f13
+f14
+``` 
+  - list_of_days (e.g., file called *wrf_2010_days.list* with dates you want to process on each line, in the form ``` 2010010100 2010010200 2010010300```
