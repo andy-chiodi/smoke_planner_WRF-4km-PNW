@@ -1,0 +1,114 @@
+! calculate mixing height from WRF data
+! needs        virtual potential temperature profile          (VPT)
+!              surface virt. pot. temp.                      (SVPT)
+!              geopotential height of sigma levels           (height)
+!              surface geopotential height                    (HGT)
+!
+! vars above calculated in recipe.jnl
+!
+! also uses tc.jnl to create time axis
+!
+! vertical grid notes: U,V on 37
+! PH and PHB (geopotential) on 38
+! P and PB on 37
+
+
+let ht = height_rg
+let profile =  VPT 
+let nonlocal_lowest = if (profile[k=1] gt svpt)  and (profile[k=@min] lt svpt) then 1 else 0 
+let nonlocal_second = if (profile[k=2] gt svpt)  and    (profile[k=1] gt svpt) and (profile[k=@min] lt svpt) then 1 else 0
+let mask1 = if profile lt svpt then 1 else 0 
+let mask1nan =  if profile lt svpt then 1 
+let mask2 = if profile gt svpt then 1 
+let masked1 = profile*mask1 
+let masked2 = profile*mask2 
+let layers = mask1[k=@sum] 
+let l1 = masked1[k=@max]    
+let l2 = masked2[k=@min] 
+let w2 = (svpt - l1)/(l2-l1) 
+let w1 = 1-w2 
+let h1m = ht*mask1 
+let h2m = ht*mask2 
+let h1 = h1m[k=@max] 
+let h2 = h2m[k=@min] 
+let mh1 = h1*w1 + h2*w2 - hgt  !  minus hgt is to go to height agl
+! let mh = if layers gt 0.5 then mh1
+let mh_0 = if layers gt 0.5 then mh1 else 0
+
+! now transport winds.  U staggared in X, V staggared in Y-axis direction, so need to unstaggar
+
+! un-staggar : Note: unstaggaring reduces max wind speed since averaging smooths
+
+let v_un0 = 0.5*(v + v[j=@shf:1])  
+let v_un = v_un0[j=1:264]
+
+let u_un0 = 0.5*(u + u[i=@shf:1])
+let u_un = u_un0[i=1:345]
+
+let wspd = (u_un^2 + v_un^2)^0.5
+let sprof = wspd*mask1nan
+let transport_wind  = sprof[k=@ave]
+
+! vertical average weighted by layer geopotential thicknes
+let weights0 = 0.5*(ht[k=@shf:1] - ht[k=@shf:-1])
+let weights = weights0[k=@fnr]
+let thickness = weights*mask1
+let spdth = thickness*sprof
+let transport_wind_hgtweighted = spdth[k=@sum] / thickness[k=@sum]
+let transport_wind2 = if abs(transport_wind_hgtweighted) lt 99999999.9 then transport_wind_hgtweighted else 0
+let tw = transport_wind2
+let lm = if landmask gt 0.5 then 1 
+let transport_wind_lm = transport_wind2 * lm
+
+! use 10m winds for wind speed
+
+let wspd10_0 = (u10*u10+v10*v10)^0.5
+
+! calc 10m wind direction
+
+let wdir10_0  = mod(360.+180./3.141592653589 * atan2 (u10,v10),360)  ! in nautical/wind vector azimuth, e.g. eastward flow is 90 deg
+	
+! create ferret friendly time axis
+
+go tc.jnl
+
+! prep for saving: mh, tw, wspd10m, vi, wdir10_0
+
+! Ventilation index
+
+let/ti="Ventilation Index"/units="m^2 s-1" vi0 = transport_wind2 * mh_0
+let/ti="Ventilation Index (WA State - based on 10m wind speed)"/units="m^2 s-1" vi_wa0 = wspd10 * mh_0
+
+
+let/ti="Ventilation Index"/units="m^2 s-1" vi = vi0[gt=tax@asn]
+let/ti="Ventilation Index (WA State - based on 10m wind speed)"/units="m^2 s-1" vi_wa = vi_wa0[gt=tax@asn]
+
+
+! Mixing Height
+
+let/ti="Mixing Height"/units="m" mh = mh_0[gt=tax@asn]
+
+! Transport winds
+
+let/ti="Transport Wind"/units="m^2/s" tw = transport_wind2[gt=tax@asn]
+
+! 10 m wind speed
+
+let/ti="Wind Speed at 10m agl"/units="m/s" w10 = wspd10_0[gt=tax@asn]
+
+! 10 m wind direection
+
+let/ti="Wind direction at 10m agl (vector azimuth direction/nautical)"/units="degrees" wdir10  = wdir10_0[gt=tax@asn]
+
+! 2m relative humidity - calculated in recipe.jnl
+
+let/ti="relative humidity at 2m height agl" rh2 = rh2_0[gt=tax@asn]
+
+! z500
+let/ti="500 hPa geopotential height"/units="m" z500 = z500_ln[gt=tax@asn]
+
+! 2m air temp
+let/ti="Temperature 2m agl"/units="K" temp2 = t2[gt=tax@asn]
+
+! Planetary boundary layer height
+let/ti="Planetary Boundary Layer Height"/units="m" pbl = pblh[gt=tax@asn]

@@ -1,0 +1,15 @@
+! convert wrf "times" to netcdf time axis
+
+! grab year, month, day, hour info, from WRF var "times"
+let     HR = SUBSTRING(TIMES,12,2)
+let     DD = SUBSTRING(TIMES,9,2)
+let     MN = SUBSTRING(TIMES,6,2)
+let     YR = SUBSTRING(TIMES,1,4)
+! use days 1900 to create year day (since 1-1-1900)
+let     TSTEP = DAYS1900(STRFLOAT(YR),STRFLOAT(MN),STRFLOAT(DD)) + DFRAC
+let     DFRAC = STRFLOAT(HR)/24
+define axis/T/T0=1-jan-1900/unit=days tax = tstep
+
+
+
+

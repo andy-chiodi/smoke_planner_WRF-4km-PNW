@@ -1,0 +1,22 @@
+!cancel mode verify
+!cancel mode journal
+can da/all
+can va/all
+!set mem/size=1000
+use ($1)
+go recipe    ! defines core atmos. variables for mixing height and trans. wind calc. from saved WRF data
+go vi_346x265        ! calculates mixing height, trans. wind and ventiliation index (needs tc.jnl for time conversion)
+             ! also defines 10m wind direction
+
+
+
+save/file="/home/chiodi/FW/data/345x264/mh.($2).nc"/clobber mh
+save/file="/home/chiodi/FW/data/345x264/tw.($2).nc"/clobber tw
+save/file="/home/chiodi/FW/data/345x264/vi.($2).nc"/clobber vi
+save/file="/home/chiodi/FW/data/345x264/w10.($2).nc"/clobber w10
+save/file="/home/chiodi/FW/data/345x264/wdir10.($2).nc"/clobber wdir10
+save/file="/home/chiodi/FW/data/345x264/rh2.($2).nc"/clobber rh2
+save/file="/home/chiodi/FW/data/345x264/temp2.($2).nc"/clobber temp2
+save/file="/home/chiodi/FW/data/345x264/z500.($2).nc"/clobber z500
+
+!sp rm ferret.jnl
