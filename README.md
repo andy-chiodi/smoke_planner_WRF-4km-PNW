@@ -10,24 +10,34 @@ the PyFerret script `main346x265.jnl` is meant for the original, pre 18 October 
 
 -Typically, these scripts are executed in Python from a command line, wherein the PyFerret scripts are executed as a pseudo-python module.  For example: typing the following in a command line `python wrf.py daylist hourlist main.jnl` will run the script `main.jnl` over each day and hour listed in the daylist and hourlst files (see next step for more information)
 
+-Some of these scripts are coded to read in data from a given directory and save files to another given directory.  The lines of code specifiying these directories will need to be changed to suit the local environment
+
 ## Step 1. Process the archived WRF model output data
 Prerequesites
 
 - The wrf output data files
-- Python script `wrf.py`
+- Python script `wrf.py`.  example linux command line usage `python wrf.py days.txt hours.txt PyFerret_Script.jnl`
+  here, *PyFerret_Script.py* could be any of the top level scripts, such as main.jnl, uv.jnl, pbl.jnl
+  `wrf.py` loops though the lists of days and hours in the *days.txt* and *hours.txt* files (see below) and runs
+  the PyFerret script it is given (e.g. main.jnl) for each listed hour (f12-f35 for a continuous record) of each listed day
+  
 - Pyferret scripts:
-  - `main.jnl` [`main346x265.jnl`]   loops though list of days and hours, loading an uncompressed WRF data file and calling recipe.jnl, vi.jnl
+  - `main.jnl` [`main346x265.jnl`]   loads an uncompressed WRF data file, calls recipe.jnl & vi.jnl, then saves out variables
+  - `uv.jnl` [`uv345x265.jnl`]       same as *main.jnl* except for 10m winds rotated from Lambert Conformal to earth coordinates
+  - `pbl.jnl` [`pbl345x264.jnl`]     same as above, except for planetary boundary layer height   
   - `recipe.jnl` defines variables necessary for fire-weather (e.g. relative humidity, virtual potential temperature) based on saved-out WRF variables
   - `vi.jnl` [`vi_346x265.jnl`] calculates mixing height, transport wind and ventilation index based on variables provided by WRF or defined by `recipe.jnl`
   - `tc.jnl` a script needed to asign a datetime to each hour of processed data (enables time aggregation in a later step)
 
-Other files: 
+Other files:
   - *list_of_hours*  Text file with the names of the forecast hours you want to process on separate lines, such as
 ```
 f12
 f13
 f14
 ``` 
+an example file *hours.list* is provided in this repository
+
   - *list_of_days*  Text file with dates you want to process on each line, for example
 ```
 
@@ -35,3 +45,4 @@ f14
 2010010200
 2010010300
 ```
+an example file *wrf_2018_days.list* is provided in this repository
