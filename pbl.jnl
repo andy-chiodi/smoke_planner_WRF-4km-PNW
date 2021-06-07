@@ -1,0 +1,10 @@
+can da/all
+can va/all
+
+use ($1)
+go recipe    ! defines core atmos. variables for mixing height and trans. wind calc. from saved WRF data
+go vi        ! calculates mixing height, trans. wind and ventiliation index (needs tc.jnl for time conversion)
+             ! also defines 10m wind direction
+
+save/file="/home/chiodi/FW/data/pbl.($2).nc"/clobber pbl
+

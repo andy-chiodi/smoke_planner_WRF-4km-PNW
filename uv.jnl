@@ -1,0 +1,28 @@
+can da/all
+can va/all
+
+use ($1)
+go recipe    ! defines core atmos. variables for mixing height and trans. wind calc. from saved WRF data
+go vi        ! calculates mixing height, trans. wind and ventiliation index (needs tc.jnl for time conversion)
+             ! also defines 10m wind direction
+
+use alpha
+set da 1
+
+! from https://www-k12.atmos.washington.edu/~ovens/wrfwinds.html  (Dave Ovens)
+!  Uearth = U*cosalpha - V*sinalpha
+!  Vearth = V*cosalpha + U*sinalpha
+! 10m wind vectors in model domain space are named u10,v10 and on 345,264 grid like, say, t2 (pre 2011)
+
+let/ti="Zonal 10m wind (Rotated to Earth Coordinates)"  u10r = u10*cosalpha[d=2] - v10*sinalpha[d=2]
+let/ti="Meridional 10m wind (Rotated to Earth Coordinates)"  v10r = v10*cosalpha[d=2] + u10*sinalpha[d=2]
+
+let/ti="Zonal 10m wind (Rotated to Earth Coordinates)"/units="m/s"  u10e = u10r[gt=tax@asn]
+let/ti="Meridional 10m wind (Rotated to Earth Coordinates)"/units="m/s"  v10e = v10r[gt=tax@asn]
+
+save/file="/home/chiodi/FW/data/u10e.($2).nc"/clobber u10e
+save/file="/home/chiodi/FW/data/v10e.($2).nc"/clobber v10e
+
+
+
+
