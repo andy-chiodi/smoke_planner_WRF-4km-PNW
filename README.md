@@ -24,10 +24,13 @@ Prerequesites
 - Pyferret scripts:
   - `main.jnl` [`main346x265.jnl`]   loads an uncompressed WRF data file, calls recipe.jnl & vi.jnl, then saves out variables
   - `uv.jnl` [`uv345x265.jnl`]       same as *main.jnl* except for 10m winds rotated from Lambert Conformal to earth coordinates
-  - `pbl.jnl` [`pbl345x264.jnl`]     same as above, except for planetary boundary layer height   
+  - 'uv_tw.jnl [`uv345x264.jnl`]     save as above, except for transport winds rotate from Lambert Conformal to earth coordinates
+  - `pbl.jnl` [`pbl345x264.jnl`]     same as above, except specifically for (scalar) planetary boundary layer height (a variable added after main.jnl was written)   
   - `recipe.jnl` defines variables necessary for fire-weather (e.g. relative humidity, virtual potential temperature) based on saved-out WRF variables
   - `vi.jnl` [`vi_346x265.jnl`] calculates mixing height, transport wind and ventilation index based on variables provided by WRF or defined by `recipe.jnl`
   - `tc.jnl` a script needed to asign a datetime to each hour of processed data (enables time aggregation in a later step)
+
+Verson 2.0 of main and vi, e.g. `main_2.0.jnl` and `vi_2.0.jnl` include all variabless
 
 Other files:
   - *list_of_hours*  Text file with the names of the forecast hours you want to process on separate lines, such as
@@ -46,3 +49,5 @@ an example file *hours.list* is provided in this repository
 2010010300
 ```
 an example file *wrf_2018_days.list* is provided in this repository
+
+  - alpha.nc and alpha345x264.nc are netcdf files needed to rotate the WRF wind vectors to an earth-relative perspective
