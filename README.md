@@ -30,7 +30,8 @@ Prerequesites
   - `vi.jnl` [`vi_346x265.jnl`] calculates mixing height, transport wind and ventilation index based on variables provided by WRF or defined by `recipe.jnl`
   - `tc.jnl` a script needed to asign a datetime to each hour of processed data (enables time aggregation in a later step)
 
-Verson 2.0 of main and vi, e.g. `main_2.0.jnl` and `vi_2.0.jnl` include all variabless
+Verson 2.0 of main and vi, e.g. `main_2.0.jnl` and `vi_2.0.jnl` include all variables:
+variables supported as of 10 June 2021: mixing height (mh), transport wind speed (tw), tranport wind vector components rotated to earth coordinates (utwe,vtwe) ventilation index (vi), planetary boundary height (pbl), 10 m wind speed (w10), 10 m wind vector (u10e, v10e), 10 m wind direction (wdir10), 2m temperature (temp2), 2m rh (rh2), 500 mb geopotential height (z500) 
 
 Other files:
   - *list_of_hours*  Text file with the names of the forecast hours you want to process on separate lines, such as
