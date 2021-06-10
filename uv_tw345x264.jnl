@@ -1,0 +1,15 @@
+can da/all
+can va/all
+
+use ($1)
+go recipe    ! defines core atmos. variables for mixing height and trans. wind calc. from saved WRF data
+go vi_345x264_2.0        ! calculates mixing height, trans. wind and ventilation index (needs tc.jnl for time conversion)
+             ! also defines 10m wind direction
+
+! from https://www-k12.atmos.washington.edu/~ovens/wrfwinds.html  (Dave Ovens)
+!  Uearth = U*cosalpha - V*sinalpha
+!  Vearth = V*cosalpha + U*sinalpha
+
+save/file="/home/chiodi/FW/data/345x264/utwe.($2).nc"/clobber utwe
+save/file="/home/chiodi/FW/data/345x264/vtwe.($2).nc"/clobber vtwe
+

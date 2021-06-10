@@ -6,7 +6,7 @@ go recipe    ! defines core atmos. variables for mixing height and trans. wind c
 go vi_345x264        ! calculates mixing height, trans. wind and ventiliation index (needs tc.jnl for time conversion)
              ! also defines 10m wind direction (in model coordinates)
 
-use alpha345x265  ! not all WRF files have cosalpha,sinalpha saved - 
+use alpha345x264  ! not all WRF files have cosalpha,sinalpha saved - 
 set da 1
 
 ! from https://www-k12.atmos.washington.edu/~ovens/wrfwinds.html  (Dave Ovens)
