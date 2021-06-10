@@ -8,7 +8,7 @@ in a single file) into uncompressed netcdf files that contain all hours at a sin
 -The WRF archive in this case underwent a domain change in October 2011.  Files with the grid listed in the file name, for example 
 the PyFerret script `main346x265.jnl` is meant for the original, pre 18 October 2011 grid.  Files without the horizontal grid listed are meant for the 18 October 2011 - 2020 period.
 
--Typically, these scripts are executed in Python from a command line, wherein the PyFerret scripts are executed as a pseudo-python module.  For example: typing the following in a command line `python wrf.py daylist hourlist main.jnl` will run the script `main.jnl` over each day and hour listed in the daylist and hourlst files (see next step for more information)
+-Typically, these scripts are executed in Python from a command line, wherein the PyFerret scripts are executed as a pseudo-python module.  For example: typing the following in a command line `python wrf.py daylist hourlist main` will run the script `main.jnl` over each day and hour listed in the daylist and hourlst files (see next step for more information)
 
 -Some of these scripts are coded to read in data from a given directory and save files to another given directory.  The lines of code specifiying these directories will need to be changed to suit the local environment
 
