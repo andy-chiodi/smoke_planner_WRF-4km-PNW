@@ -1,0 +1,31 @@
+!cancel mode verify
+!cancel mode journal
+can da/all
+can va/all
+
+define sym ddir "/home/chiodi/FW/data"  ! dir where the data will be saved
+!define sym ddir "/home/chiodi/FW/test"
+
+!set mem/size=1000
+use ($1)     ! ($1) referes to the first argument given after the name of the script, when the script is executed, e.g. 'myfile' in '>> go main.jnl myfile'
+go recipe    ! defines core atmos. variables for mixing height and trans. wind calc. from saved WRF data
+go vi_2.0    ! calculates mixing height, trans. wind and ventiliation index (needs tc.jnl for time conversion)
+             ! also defines 10m wind direction
+             ! vi_2.0 differs from original (vi.jnl) in that v2.0 includes transport wind components TWU and TWV
+
+save/file="($ddir)/mh.($2).nc"/clobber mh
+save/file="($ddir)/tw.($2).nc"/clobber tw
+save/file="($ddir)/vi.($2).nc"/clobber vi
+save/file="($ddir)/w10.($2).nc"/clobber w10
+save/file="($ddir)/wdir10.($2).nc"/clobber wdir10
+save/file="($ddir)/rh2.($2).nc"/clobber rh2
+save/file="($ddir)/z500.($2).nc"/clobber z500
+save/file="($ddir)/temp2.($2).nc"/clobber temp2
+save/file="($ddir)/pbl.($2).nc"/clobber pbl
+save/file="($ddir)/u10e.($2).nc"/clobber u10e
+save/file="($ddir)/v10e.($2).nc"/clobber v10e
+save/file="($ddir)/utwe.($2).nc"/clobber utwe
+save/file="($ddir)/vtwe.($2).nc"/clobber vtwe
+
+
+!sp rm ferret.jnl
