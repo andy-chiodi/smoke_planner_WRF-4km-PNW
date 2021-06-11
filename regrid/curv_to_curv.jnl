@@ -1,0 +1,34 @@
+! rect to rect was mis-named.  this is a copy, with the addition of a temp save file specific to the mv ymd hr, to allow running 2 at a time
+! without conflict
+can va/all
+can da/all
+set mem/size=500
+
+define sym mv "($1)"
+define sym ymd "($2)"
+define sym hr "($3)"
+define sym indir "/home/chiodi/FW/data/345x264"
+define sym outdir "/home/chiodi/FW/data/regrid"
+
+
+use "($indir)/($mv).($ymd).($hr).nc"
+define sym ti "`($mv).long_name`"
+if `"($mv)" ne "rh2"` then
+  define sym un "`($mv).units`"
+else
+  define sym un "none"
+endif
+
+use map.345x264to0.0333x0.05.nc
+
+let ($mv)_rect = curv_to_rect( ($mv)[d=1], map[d=2]  )
+save/file=temp.($mv).($ymd).nc/clobber ($mv)_rect
+can va ($mv)_rect
+can va/all
+can da/all
+use temp.($mv).($ymd).nc
+use wrf.latlon.405x282.nc
+! need to transfer title and units from orig
+let/ti="($ti)"/units="($un)" ($mv)  = rect_to_curv(($mv)_rect[d=1],lon[d=2],lat[d=2],2)
+save/file="($outdir)/($mv).($ymd).($hr).nc"/clobber ($mv)
+sp rm temp.($mv).($ymd).nc

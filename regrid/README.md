@@ -9,11 +9,11 @@ Prerequesites
 - Python script `regrid_wrf.py`.  example linux command line usage `python regrid_wrf.py days.txt hours.txt variables.txt PyFerret_Script`
   here, *PyFerret_Script* is likely the top-level script curv_to_curv.jnl
   `regrid_wrf.py` loops though the lists of days, hours iand variables in the *days.txt*,  *hours.txt* and *variables.txt* files and runs
-  the PyFerret script it is given (e.g. curve_to_curve.jnl) for each hour, day and variable listed.  The regridding is a 2-step process: 
+  the PyFerret script it is given (e.g. curv_to_curv.jnl) for each hour, day and variable listed.  The regridding is a 2-step process: 
   first the original 345x264 curvilinear grid is mapped to a rectilinear grid, then remapped to the new 405x282 grid.
   
 - Pyferret scripts:
-  - `curv_to_curve.jnl` defines source (`indir`) and output directories (`outdir`) and regrids the pre-Oct 2011 345x264 data to present 405x282 domain
+  - `curv_to_curv.jnl` defines source (`indir`) and output directories (`outdir`) and regrids the pre-Oct 2011 345x264 data to present 405x282 domain
 
 - Regridding data files
   - `map.345x264to0.0333x0.05.nc`  mapping coordinates pre-computed by Ferret script CURV_TO_RECT_MAP.   
