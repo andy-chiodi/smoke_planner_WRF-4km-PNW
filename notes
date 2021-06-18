@@ -1,0 +1,13 @@
+next directory is the one linked to remote git hub account
+https://github.com/andy-chiodi/smoke_planner_WRF-4km-PNW.git
+
+adding a file:
+
+git add .
+git commit -m "some message"
+git push <remote name> <branch name>, e.g. git push origen main, will push local changes to online repo
+
+
+10 June 2021 - found that once logged out, the link to online repo no longer exists.  So, runnning
+git remote add origen https://github.com/andy-chiodi/smoke_planner_WRF-4km-PNW
+re-established link
