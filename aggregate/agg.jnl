@@ -1,0 +1,13 @@
+ ! NOAA/PMEL TMAP
+ ! FERRET v7.3 (optimized)
+ ! Linux 3.10.0-693.11.1.el7.x86_64 64-bit - 12/04/17
+ !  6-Sep-18 09:56     
+
+! aggregation in ferret
+! 1st input var name, 2nd year, 3rd month (mm), e.g.>> go agg.jnl  vi 2017 01
+
+define sym sd "/home/chiodi/FW/data"
+let file_list = SPAWN("ls -1 ($sd)/($1).($2)($3)*f*.nc")
+TSERIES ($1) = file_list
+
+

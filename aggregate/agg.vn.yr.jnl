@@ -1,0 +1,25 @@
+ ! NOAA/PMEL TMAP
+ ! PyFerret v7.42 (optimized)
+ ! Linux 4.4.0-116-generic - 08/10/18
+ ! 10-Dec-18 09:24     
+
+! this script aggregates hourly netcdf files to monthly
+set mem/size=2000
+define sym mv "($1)"
+define sym yr "($2)"
+define sym sdir "/home/chiodi/FW/data"
+
+repeat/range=1:9/name=loop ( ;\
+  define sym m `loop` ;\
+  go agg ($mv) ($2) 0($m)  ;\
+  save/file="($sdir)/($yr)/($mv).($yr).0($m).nc"/clobber ($mv)  ;\
+  can da/all ;\
+)
+
+repeat/range=10:12/name=loop ( ;\
+  define sym mm `loop` ;\
+  go agg ($mv) ($2) ($mm)  ;\
+  save/file="($sdir)/($yr)/($mv).($yr).($mm).nc"/clobber ($mv)  ;\
+  can da/all ;\
+)
+

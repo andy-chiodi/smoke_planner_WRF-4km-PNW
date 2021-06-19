@@ -1,0 +1,21 @@
+define sym vn "($1)"  ! e.g. utwe, mh, vi
+
+
+let t1 = SPAWN("date")
+list/clobber/file=($nv).te t1  ! this and subsequent list command just measures the clock time taken by this script
+
+! aggregate hourly into monthly netcdf - one year at a time
+go agg.vn.yr.jnl ($vn) 2010
+go agg.vn.yr.jnl ($vn) 2011
+go agg.vn.yr.jnl ($vn) 2012
+go agg.vn.yr.jnl ($vn) 2013
+go agg.vn.yr.jnl ($vn) 2014
+go agg.vn.yr.jnl ($vn) 2015
+go agg.vn.yr.jnl ($vn) 2016
+go agg.vn.yr.jnl ($vn) 2017
+go agg.vn.yr.jnl ($vn) 2018
+
+let t2 = SPAWN("date")
+list/append/file=($nv).te t2
+
+exit/command_file
