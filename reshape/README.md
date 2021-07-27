@@ -1,6 +1,6 @@
 # Reshaping netcdf files with Ferret 
 
-Ferret (or PyFerret) scripts to reshape the aggregated WRF data to files with a times for a single X,Y (lat,lon) grid point
+Ferret (or PyFerret) scripts to reshape the aggregated WRF data to files with all times for a single X,Y (lat,lon) grid point
 
 ## Files
 
