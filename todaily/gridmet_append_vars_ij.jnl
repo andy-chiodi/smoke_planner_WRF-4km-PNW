@@ -1,0 +1,33 @@
+ ! NOAA/PMEL TMAP
+ ! FERRET vvr.42 (optimized)
+ ! Linux 2.6.32-754.2.1.el6.x86_64 64-bit - 07/23/18
+ !  1-Feb-21 10:21     
+
+can va/all
+can da/all
+
+define sym ix "($1)"
+define sym jy "($2)"
+
+! now defined in higher-level script
+!define sym sdir "/home/chiodi/FW/tool1/V5/data/working/daily"
+!define sym ddir "/home/chiodi/FW/tool1/V5/data/working"
+
+use "/home/chiodi/FW/tool1/V5/data/dum_time.nc"
+define grid/like=dum[d=1] tgrd
+
+let fl1 = SPAWN("ls -1 ($ddir)/pr.i($ix).j($jy).????.nc")
+TSERIES mv1 = fl1
+let/ti="24-hour accumulated precipitation"/units="mm" pr_gridmet = pr[gt=tgrd@asn]
+save/file="($sdir)/wrf.daily.i($ix).j($jy).nc"/append pr_gridmet 
+
+let fl2 = SPAWN("ls -1 ($ddir)/fm100.i($ix).j($jy).????.nc")
+TSERIES mv2 = fl2
+let/ti="100-hr dead fuel moisture"/units="%" fm100_gridmet = fm100[gt=tgrd@asn]
+save/file="($sdir)/wrf.daily.i($ix).j($jy).nc"/append fm100_gridmet
+
+let fl3 = SPAWN("ls -1 ($ddir)/fm1000.i($ix).j($jy).????.nc")
+TSERIES mv3 = fl3
+let/ti="1000-hr dead fuel moisture"/units="%" fm1000_gridmet = fm1000[gt=tgrd@asn]
+save/file="($sdir)/wrf.daily.i($ix).j($jy).nc"/append fm1000_gridmet
+

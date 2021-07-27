@@ -1,0 +1,27 @@
+can da/all
+can va/all
+
+define sym ilon "($1)"
+define sym jlat "($2)"
+define sym toff "($3)"
+
+! looks for data to use here
+define sym ddir "/home/chiodi/FW/tool1/V5/data/working"
+! saves daily files here
+define sym sdir "/home/chiodi/FW/tool1/V5/data/working/test"
+
+go todaily_tz vi ($ilon) ($jlat) ($toff)
+go todaily_tz tw ($ilon) ($jlat) ($toff)
+go todaily_tz mh ($ilon) ($jlat) ($toff)
+go todaily_tz pbl ($ilon) ($jlat) ($toff)
+go todaily_tz rh2 ($ilon) ($jlat) ($toff)
+go todaily_tz temp2 ($ilon) ($jlat) ($toff)
+go todaily_tz w10 ($ilon) ($jlat) ($toff)
+!go todaily_tz wdir10 ($ilon) ($jlat) ($toff)
+go todaily_wind_tz  ($ilon) ($jlat) ($toff)
+go todaily_transport_wind_tz  ($ilon) ($jlat) ($toff)
+
+go merge ($ilon) ($jlat) 
+
+go gridmet_append_vars_ij ($ilon) ($jlat)
+
