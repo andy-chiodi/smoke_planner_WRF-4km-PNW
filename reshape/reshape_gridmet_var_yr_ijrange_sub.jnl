@@ -17,7 +17,7 @@ define sym j2  "($6)"  ! wrf i
 define sym idir "/home/chiodi/FW/data"
 define sym odir "/home/chiodi/FW/tool1/V5/data/working"
 
-use ($idir)/($vn)/($vn).($yr).nc
+use ($idir)/($yr)/($vn).($yr).nc
 
 !let fl = SPAWN("ls -1 ($idir)/($yr)/($vn).($yr).*.nc")
 !TSERIES ($vn) = fl
