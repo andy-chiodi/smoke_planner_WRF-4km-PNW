@@ -17,5 +17,7 @@ go reshape_var_yr_ijrange_sub.jnl ($vn) 2015 ($istart) ($iend) ($jstart) ($jend)
 go reshape_var_yr_ijrange_sub.jnl ($vn) 2016 ($istart) ($iend) ($jstart) ($jend)
 go reshape_var_yr_ijrange_sub.jnl ($vn) 2017 ($istart) ($iend) ($jstart) ($jend)
 go reshape_var_yr_ijrange_sub.jnl ($vn) 2018 ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl ($vn) 2019 ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl ($vn) 2020 ($istart) ($iend) ($jstart) ($jend)
 
 sp date > ($vn)_2.txt

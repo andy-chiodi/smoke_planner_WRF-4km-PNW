@@ -1,0 +1,24 @@
+! sources from /home/chiodi/FW/tool1/V4/data in *_sub.jnl - 
+! variables supported include fm100, fm1000, pr (daily-gridmet), rh2, temp2, vi, tw, w10, wdir10, mh, pbl, utwe, vtwe, u10e, v10e 
+
+define sym vn "($1)"
+sp date > ($vn)_1.txt
+define sym istart "160"
+define sym iend   "180"
+define sym jstart "220"
+define sym jend   "240"
+
+go reshape_gridmet_var_yr_ijrange_sub.jnl ($vn) 2010 ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl ($vn) 2011 ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl ($vn) 2012 ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl ($vn) 2013 ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl ($vn) 2014 ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl ($vn) 2015 ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl ($vn) 2016 ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl ($vn) 2017 ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl ($vn) 2018 ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl ($vn) 2019 ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl ($vn) 2020 ($istart) ($iend) ($jstart) ($jend)
+
+
+sp date > ($vn)_2.txt

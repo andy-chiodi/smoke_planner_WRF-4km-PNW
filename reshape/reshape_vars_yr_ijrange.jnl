@@ -1,0 +1,29 @@
+! sources from /home/chiodi/FW/data/YEAR, where YEAR is, e.g. 2019 or 2020 in *_sub.jnl - 
+! variables supported include fm100, fm1000, pr (daily-gridmet), rh2, temp2, vi, tw, w10, mh, pbl, utwe, vtwe, u10e, v10e 
+
+
+define sym yr "($1)"
+sp date > ($yr)_vars_start.time
+define sym istart "160"
+define sym iend   "180"
+define sym jstart "220"
+define sym jend   "240"
+
+go reshape_gridmet_var_yr_ijrange_sub.jnl fm100  ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl fm1000 ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_gridmet_var_yr_ijrange_sub.jnl pr     ($yr) ($istart) ($iend) ($jstart) ($jend)
+
+go reshape_var_yr_ijrange_sub.jnl mh ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl tw ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl vi ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl pbl ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl utwe ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl vtwe ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl u10e ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl v10e ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl w10 ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl temp2 ($yr) ($istart) ($iend) ($jstart) ($jend)
+go reshape_var_yr_ijrange_sub.jnl rh2 ($yr) ($istart) ($iend) ($jstart) ($jend)
+
+
+sp date > ($yr)_vars_end.time
