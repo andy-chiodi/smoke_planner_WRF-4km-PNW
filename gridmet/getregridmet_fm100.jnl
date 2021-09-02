@@ -1,0 +1,23 @@
+ ! NOAA/PMEL TMAP
+ ! FERRET v7.42 (optimized)
+ ! Linux 2.6.32-754.2.1.el6.x86_64 64-bit - 07/23/18
+ ! 13-Aug-19 12:00     
+
+
+sp date > start_fm100.txt
+can da/all
+can va/all
+can reg
+set mem/size=1500
+
+define sym inv "dead_fuel_moisture_100hr"
+define sym var "fm100"
+define sym yr "($1)"
+
+use http://thredds.northwestknowledge.net:8080/thredds/dodsC/MET/($var)/($var)_($yr).nc
+use wrf.latlon.405x282.nc
+
+let/ti="100hr dead fuel moisture (gridMet)"/units="%" ($var) = rect_to_curv(($inv)[d=1],lon[d=2],lat[d=2],0)
+save/file=($var).($yr).nc/clobber ($var)
+sp date > end_fm100.txt
+exit/command_file

@@ -1,0 +1,20 @@
+ ! NOAA/PMEL TMAP
+ ! FERRET v7.42 (optimized)
+ ! Linux 2.6.32-754.2.1.el6.x86_64 64-bit - 07/23/18
+ ! 13-Aug-19 12:00     
+
+can da/all
+can va/all
+can reg
+set mem/size=1500
+
+define sym inv "precipitation_amount"
+define sym var "pr"
+define sym yr "($1)"
+
+use http://thredds.northwestknowledge.net:8080/thredds/dodsC/MET/($var)/($var)_($yr).nc
+use wrf.latlon.405x282.nc
+
+let/ti="Precipittion Amount (gridMet)"/units="mm" ($var) = rect_to_curv(($inv)[d=1],lon[d=2],lat[d=2],0)
+save/file=($var).($yr).nc/clobber ($var)
+exit/command_file
