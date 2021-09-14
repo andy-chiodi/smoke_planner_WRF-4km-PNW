@@ -52,7 +52,7 @@ an example file *wrf_2018_days.list* is provided in this repository
 
   - alpha.nc and alpha345x264.nc are netcdf files needed to rotate the WRF wind vectors to an earth-relative perspective
 
-## Step 2. Regrid the 17 Oct 2011, and before, files to the 18 Oct 2011, and after, grid
+## Step 2. `[if working with earlier 345x264 data]` Regrid the 17 Oct 2011, and before, files to the 18 Oct 2011, and after, grid
 
 See files and README.md in `regrid` directory
 
@@ -63,3 +63,11 @@ See files and README.md in `aggregate` directory
 ## Step 4. Reshape the WRF data into individual netcdf files with all times at a single lat-lon (X-Y) point.
 
 See files and README.md in `reshape` directory
+
+## Step 5. Calculate daily statistics and store results in daily netcdf files
+
+See files and README.nc in `todaily` directory
+
+## Step 6. Create JSON files and upload them to aws bucket
+
+See files and README.nc in `json` directory
