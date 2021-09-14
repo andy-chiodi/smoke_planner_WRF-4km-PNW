@@ -126,7 +126,8 @@ let n12 = (d12-mu)^2
 let sum = n0+n1+n2+n3+n4+n5+n6+n7+n8+n9+n10+n11+n12
 let std0 = (sum/N)^0.5
 
-define axis/T0="1-jan-2010 ($hr0):00"/units=days/T="1-jan-2010 ($hr0):00":"31-dec-2018 ($hr0):00":1 dta
+! defined in wrfdaily_tz
+!define axis/T0="1-jan-2010 ($hr0):00"/units=days/T="1-jan-2010 ($hr0):00":"31-dec-2018 ($hr0):00":1 dta
 
 ! define daily variables to save out
 define sym dadef "($hr0)00 to ($hr1)00 (+($dp))"

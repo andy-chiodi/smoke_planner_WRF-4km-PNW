@@ -13,8 +13,11 @@ define sym os "($4)"  ! time zone offset w.r.t. UTC in hours (e.g. PST = -8)
 
 ! ddir and sdir need to be already defined for this to work
 
-! the reference hour for daily averaging. our days start with this hour UTC
-define sym hr0 "`5 - ($os)`"  ! PST = 13, MST = 12, CST = 11, EST=10
+
+! the reference hour for daily averaging. our days start with this hour UTC: next line moved up to wrfdaily_tz
+!define sym hr0 "`5 - ($os)`"  ! PST = 13, MST = 12, CST = 11, EST=10
+
+
 ! the end of "daytime" by our definition
 define sym hr1 "`($hr0)+12`"
 define sym dp "0"
@@ -111,7 +114,8 @@ let daytime_ave = (s0+s1+s2+s3+s4+s5+s6+s7+s8+s9+s10+s11+s12)/13
 !nighttime ave
 let nighttime_ave = (s13+s14+s15+s16+s17+s18+s19+s20+s21+s22+s23)/11 
 
-define axis/T0="1-jan-2010 ($hr0):00"/units=days/T="1-jan-2010 ($hr0):00":"31-dec-2018 ($hr0):00":1 dta
+! dta now defined in higher level script
+!define axis/T0="1-jan-2010 ($hr0):00"/units=days/T="1-jan-2010 ($hr0):00":"31-dec-2018 ($hr0):00":1 dta
 
 ! define daily variables to save out
 ! add transfer of units

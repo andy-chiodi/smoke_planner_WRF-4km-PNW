@@ -31,7 +31,7 @@ def roffset(i,j):
     today = datetime.now()
     sday = datetime(2000,7,1)  # a daylight savings-time date
     aday = datetime(2000,1,1)  # a standard-time date (non daylight savings)
-    day = today   # pick standard time
+    day = aday   # pick standard time
     tz_target = timezone(tf.certain_timezone_at(lng=lon, lat=lat)) # returns timezone, e.g. 'America/Los_Angeles' from lat,lon
     # tz_target could be None! handle error case for large domain (UW WRF i,j domain seems to return named timezones)
     day_target = tz_target.localize(day)

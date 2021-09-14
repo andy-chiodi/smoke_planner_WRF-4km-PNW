@@ -1,0 +1,56 @@
+can da/all
+can va/all
+
+define sym yr "($1)"  ! e.g. 2012
+define sym month "($2)" ! e.g. feb
+define sym mn "($3)" ! e.g. 02 
+define sym day "($4)" ! e.g. 09,10 etc.
+define sym hr  "($5)" ! e.g. 19
+
+define sym ds "($yr)($mn)($day)00"
+define sym fs "($day)-($month)-($yr)"
+
+define sym sdir "/home/chiodi/FW/data/fill"
+
+
+use "/home/chiodi/FW/data/fill/nan.i405xj282.nc"
+
+let t1 = `DAYS1900( ($yr), ($mn) , ($day)) + ($hr)/24.0 `
+
+define axis/T0=1-jan-1900/units=days tax = t1
+
+show axis tax
+
+let/ti="Mixing Height"/units="m"         mh = nan + 0.0*t[gt=tax]
+let/ti="Transport Wind"/units="m/s"      tw = nan + 0.0*t[gt=tax]
+let/ti="Ventilation Index"/units="m^2/s" vi = nan + 0.0*t[gt=tax]
+
+let/ti="Zonal 10m wind"/units="m/s"      u10e = nan + 0.0*t[gt=tax]
+let/ti="Meridional 10m wind"/units="m/s" v10e = nan + 0.0*t[gt=tax]
+
+let/ti="Zonal transport wind"/units="m/s"      utwe = nan + 0.0*t[gt=tax]
+let/ti="Meridional transport wind"/units="m/s" vtwe = nan + 0.0*t[gt=tax]
+
+let/ti="Wind Speed 10m agl"/units="m/s"      w10 = nan + 0.0*t[gt=tax]
+let/ti="Planetary Boundary Layer Height"/units="m" pbl = nan + 0.0*t[gt=tax]
+let/ti="500 hPa geopotential height"/units="m" z500 = nan + 0.0*t[gt=tax]
+
+let/ti="Temperature 2m agl (K)"/units="K" temp2 = nan + 0.0*t[gt=tax]
+let/ti="Relative Humidity 2m agl" rh2 = nan + 0.0*t[gt=tax]
+
+save/file="($sdir)/mh.($ds).f($hr).nc" mh
+save/file="($sdir)/tw.($ds).f($hr).nc" tw
+save/file="($sdir)/vi.($ds).f($hr).nc" vi
+
+save/file="($sdir)/u10e.($ds).f($hr).nc" u10e
+save/file="($sdir)/v10e.($ds).f($hr).nc" v10e
+save/file="($sdir)/utwe.($ds).f($hr).nc" utwe
+save/file="($sdir)/vtwe.($ds).f($hr).nc" vtwe
+save/file="($sdir)/w10.($ds).f($hr).nc" w10
+
+save/file="($sdir)/pbl.($ds).f($hr).nc" pbl
+save/file="($sdir)/z500.($ds).f($hr).nc" z500
+
+save/file="($sdir)/rh2.($ds).f($hr).nc" rh2
+save/file="($sdir)/temp2.($ds).f($hr).nc" temp2
+
