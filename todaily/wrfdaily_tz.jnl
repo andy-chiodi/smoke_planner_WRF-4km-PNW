@@ -5,10 +5,12 @@ define sym ilon "($1)"
 define sym jlat "($2)"
 define sym toff "($3)"  ! time zone offset w.r.t. UTC in hours (e.g. PST = -8)
 
-! looks for data to use here
-define sym ddir "/home/chiodi/FW/tool1/V5/data/working"
+! looks for data to use from this root (need to add /YEAR, e.g. ~/2020
+!define sym ddir "/home/chiodi/FW/tool1/V5/data/working"   ! changed to use /storage/spark on 24 Aug 2022
+define sym ddir "/storage/spark/chiodi/UW_4km_WRF_smoke_planner_met/hourly_time_series"
 ! saves daily files here
-define sym sdir "/home/chiodi/FW/tool1/V5/data/working/test"
+!define sym sdir "/home/chiodi/FW/tool1/V5/data/working/daily" ! changed 24 Aug 2022
+define sym sdir "/storage/spark/chiodi/UW_4km_WRF_smoke_planner_met/daily_netcdf"
 
 
 ! hr0 is reference hour for daily averaging. our days start with this hour UTC

@@ -14,12 +14,37 @@ define sym jj "($2)"
 !define sym ddir "/home/chiodi/FW/tool1/V5/data/working"
 
 !  u10e,v10e rotated to earth relative
-let fl1 = SPAWN("ls -1 ($ddir)/u10e.i($ii).j($jj).????.nc")
-TSERIES wspd = fl1
+
+define sym u10 "($ddir)/2010/u10e.i($ii).j($jj).2010.nc"
+define sym u11 "($ddir)/2011/u10e.i($ii).j($jj).2011.nc"
+define sym u12 "($ddir)/2012/u10e.i($ii).j($jj).2012.nc"
+define sym u13 "($ddir)/2013/u10e.i($ii).j($jj).2013.nc"
+define sym u14 "($ddir)/2014/u10e.i($ii).j($jj).2014.nc"
+define sym u15 "($ddir)/2015/u10e.i($ii).j($jj).2015.nc"
+define sym u16 "($ddir)/2016/u10e.i($ii).j($jj).2016.nc"
+define sym u17 "($ddir)/2017/u10e.i($ii).j($jj).2017.nc"
+define sym u18 "($ddir)/2018/u10e.i($ii).j($jj).2018.nc"
+define sym u19 "($ddir)/2019/u10e.i($ii).j($jj).2019.nc"
+define sym u20 "($ddir)/2020/u10e.i($ii).j($jj).2020.nc"
+let fl1 = SPAWN("ls -1 ($u10) ($u11) ($u12) ($u13) ($u14) ($u15) ($u16) ($u17) ($u18) ($u19) ($u20) ")
+!let fl1 = SPAWN("ls -1 ($ddir)/u10e.i($ii).j($jj).????.nc")
+TSERIES uwnd = fl1
 let u = u10e[d=1]
 
-let fl2 = SPAWN("ls -1 ($ddir)/v10e.i($ii).j($jj).????.nc")
-TSERIES wdir = fl2
+define sym v10 "($ddir)/2010/v10e.i($ii).j($jj).2010.nc"
+define sym v11 "($ddir)/2011/v10e.i($ii).j($jj).2011.nc"
+define sym v12 "($ddir)/2012/v10e.i($ii).j($jj).2012.nc"
+define sym v13 "($ddir)/2013/v10e.i($ii).j($jj).2013.nc"
+define sym v14 "($ddir)/2014/v10e.i($ii).j($jj).2014.nc"
+define sym v15 "($ddir)/2015/v10e.i($ii).j($jj).2015.nc"
+define sym v16 "($ddir)/2016/v10e.i($ii).j($jj).2016.nc"
+define sym v17 "($ddir)/2017/v10e.i($ii).j($jj).2017.nc"
+define sym v18 "($ddir)/2018/v10e.i($ii).j($jj).2018.nc"
+define sym v19 "($ddir)/2019/v10e.i($ii).j($jj).2019.nc"
+define sym v20 "($ddir)/2020/v10e.i($ii).j($jj).2020.nc"
+let fl2 = SPAWN("ls -1 ($v10) ($v11) ($v12) ($v13) ($v14) ($v15) ($v16) ($v17) ($v18) ($v19) ($v20) ")
+!let fl2 = SPAWN("ls -1 ($ddir)/v10e.i($ii).j($jj).????.nc")
+TSERIES vwnd = fl2
 let v = v10e[d=2]
 
 define sym vr "u"
@@ -75,28 +100,33 @@ let y22 = ($vr2)[l=@shf:22]
 let y23 = ($vr2)[l=@shf:23]
 
 ! daytime ave
-let u_daytime_ave0 = (x0+x1+x2+x3+x4+x5+x6+x7+x8+x9+x10+x11+x12)/13
-let v_daytime_ave0 = (y0+y1+y2+y3+y4+y5+y6+y7+y8+y9+y10+y11+y12)/13
+let uda0 = (x0+x1+x2+x3+x4+x5+x6+x7+x8+x9+x10+x11+x12)/13
+let vda0 = (y0+y1+y2+y3+y4+y5+y6+y7+y8+y9+y10+y11+y12)/13
 
 !nighttime ave
 let u_nighttime_ave0 = (x13+x14+x15+x16+x17+x18+x19+x20+x21+x22+x23)/11 
 let v_nighttime_ave0 = (y13+y14+y15+y16+y17+y18+y19+y20+y21+y22+y23)/11
 
 ! wind direction std
-let rad = 180/3.141592653589793
-let d0 = rad*atan2(x0,y0)
-let d1 = rad*atan2(x1,y1)
-let d2 = rad*atan2(x2,y2)
-let d3 = rad*atan2(x3,y3)
-let d4 = rad*atan2(x4,y4)
-let d5 = rad*atan2(x5,y5)
-let d6 = rad*atan2(x6,y6)
-let d7 = rad*atan2(x7,y7)
-let d8 = rad*atan2(x8,y8)
-let d9 = rad*atan2(x9,y9)
-let d10 = rad*atan2(x10,y10)
-let d11 = rad*atan2(x11,y11)
-let d12 = rad*atan2(x12,y12)
+let rad = 180/3.1415926535897932
+let/ti="daytime ave wind vector direction" dir_dt  = atan2(uda0,vda0)
+let/ti="daytime ave wind vector mag" mag_dt  = (uda0*uda0 + vda0*vda0)^0.5
+
+! theta = arcos ( a . b / ( |a| |b|  )
+let d0 = rad * acos ( (x0*uda0 + y0*vda0) / (mag_dt * (x0*x0 + y0*y0)^0.5 )  )
+let d1 = rad * acos ( (x1*uda0 + y1*vda0) / (mag_dt * (x1*x1 + y1*y1)^0.5 )  )
+let d2 = rad * acos ( (x2*uda0 + y2*vda0) / (mag_dt * (x2*x2 + y2*y2)^0.5 )  )
+let d3 = rad * acos ( (x3*uda0 + y3*vda0) / (mag_dt * (x3*x3 + y3*y3)^0.5 )  )
+let d4 = rad * acos ( (x4*uda0 + y4*vda0) / (mag_dt * (x4*x4 + y4*y4)^0.5 )  )
+let d5 = rad * acos ( (x5*uda0 + y5*vda0) / (mag_dt * (x5*x5 + y5*y5)^0.5 )  )
+let d6 = rad * acos ( (x6*uda0 + y6*vda0) / (mag_dt * (x6*x6 + y6*y6)^0.5 )  )
+let d7 = rad * acos ( (x7*uda0 + y7*vda0) / (mag_dt * (x7*x7 + y7*y7)^0.5 )  )
+let d8 = rad * acos ( (x8*uda0 + y8*vda0) / (mag_dt * (x8*x8 + y8*y8)^0.5 )  )
+let d9 = rad * acos ( (x9*uda0 + y9*vda0) / (mag_dt * (x9*x9 + y9*y9)^0.5 )  )
+let d10 = rad * acos ( (x10*uda0 + y10*vda0) / (mag_dt * (x10*x10 + y10*y10)^0.5 )  )
+let d11 = rad * acos ( (x11*uda0 + y11*vda0) / (mag_dt * (x11*x11 + y11*y11)^0.5 )  )
+let d12 = rad * acos ( (x12*uda0 + y12*vda0) / (mag_dt * (x12*x12 + y12*y12)^0.5 )  )
+
 
 !let d13 = rad*atan2(x13,y13)
 !let d14 = rad*atan2(x14,y14)
@@ -133,7 +163,7 @@ let std0 = (sum/N)^0.5
 define sym dadef "($hr0)00 to ($hr1)00 (+($dp))"
 define sym nidef "($hr1)00 (+($dp)) to ($hr0)00 (+1)"
 
-let/ti="($hr0)00 to ($hr1)00 (+($dp)) UTC mean Zonal Wind - 10m above ground" u_daytime_ave = u_daytime_ave0[gt=dta@nrst]
+let/ti="($hr0)00 to ($hr1)00 (+($dp)) UTC mean Zonal Wind - 10m above ground" u_daytime_ave = uda0[gt=dta@nrst]
 set att/like=u u_daytime_ave
 define ATT u_daytime_ave.long_name = "($dadef) UTC mean Zonal Wind - 10m above ground"
 
@@ -141,7 +171,7 @@ let/ti="($nidef) UTC mean Zonal Wind - 10m above ground" u_nighttime_ave = u_nig
 set att/like=($vr) u_nighttime_ave
 define ATT u_nighttime_ave.long_name = "($nidef) UTC mean Zonal Wind - 10m above ground"
 
-let/ti="($dadef) UTC mean Meridional Wind - 10m above ground" v_daytime_ave = v_daytime_ave0[gt=dta@nrst]
+let/ti="($dadef) UTC mean Meridional Wind - 10m above ground" v_daytime_ave = vda0[gt=dta@nrst]
 set att/like=($vr2) v_daytime_ave
 define ATT v_daytime_ave.long_name = "($dadef) UTC mean Meridional Wind - 10m above ground"
 
