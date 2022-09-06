@@ -1,6 +1,7 @@
 import json
 from ij2latlon import rlatlon
 from ij2latlon import rland
+from ij2latlon import rhgt
 import pyferret
 import os
 import datetime
@@ -52,20 +53,22 @@ def statsjson(ii,jj):
   ddir = '/home/chiodi/FW/tool1/json/stats/'
   # dir where stats json will reside
   odir = '/home/chiodi/FW/tool1/json/stats/' 
-  # get lat lon
+  # get lat lon;  ixlon jylat
   [lat,lon] = rlatlon(int(ii),int(jj))
+  elev = rhgt(int(ii),int(jj))
   l = open(fl,'r')
   vl = open(flv,'r')
   var = l.readlines()
   vec = vl.readlines()
 
   point = {}
-  point['base_period'] = '1-jan-2010 to 31-dec-2020'
+  point['base_period'] = '2010-01-01 to 2020-01-01'
   point['lat'] = lat
   point['lon'] = lon
   point['missing'] = None
   point['grid'] = 'UW WRF 4km'
   point['land'] = str(rland(int(ii),int(jj)))
+  point['grid_cell_elevation_in_meters'] = elev
   point['percentiles'] = {}
   point['windroses'] = {}
   out = '/home/chiodi/FW/tool1/json/stats/json/i'+ii+'_j'+jj+'_stats.json'
@@ -585,9 +588,9 @@ lfid = open(lfn,'w+')
 now = datetime.datetime.now()
 lfid.write(str(now)+'\n')
 # create the stats json files and cp to S3
-for ilon in range(90,91):            # ilon  90,251  previously 160,181
+for ilon in range(90,251):            # ilon  90,251  previously 160,181
     lfid.write('ilon :'+str(ilon)+'\n')
-    for jlat in range(1,4):          # jlat   1,283 
+    for jlat in range(1,283):          # jlat   1,283 
      calcstatsferret(ilon,jlat)
      calcstatsferret_vector(ilon,jlat)
      statsjson(ilon,jlat)

@@ -25,3 +25,13 @@ def rland(i,j):
     return land
     f.close()
 
+
+def rhgt(i,j):
+    f = netcdf.netcdf_file('hgt.nc','r')  # read in UW 4km surface geopotential height. units = meters
+    wrfhgt=f.variables['HGT']
+    # subtract 1 to return answer in FERRET index convention (first index=1), rather than python (first index value = 0)
+    j = j-1
+    i = i-1
+    hgt = round(wrfhgt[j,i],1)
+    return hgt
+
