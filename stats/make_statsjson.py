@@ -14,13 +14,24 @@ def calcstatsferret(ii,jj):
   jj = str(jj)
   # file containing variable names (e.g. MH_MAX)
   fl = 'var_list.txt'
+  flsub = 'subvar_list.txt'
   l = open(fl,'r')
+  lsub = open(flsub,'r')
   var = l.readlines()
-  pyferret.start(quiet=True,verify=False,journal=False,memsize=100)
+  subvar = lsub.readlines()
+  # source nertcdf dir
+  sdir='/storage/spark/chiodi/UW_4km_WRF_smoke_planner_met/daily_netcdf'
+  subdir='/storage/spark/chiodi/UW_4km_WRF_smoke_planner_met/daily_netcdf/subdaily'
+  pyferret.start(quiet=True,verify=False,journal=False,memsize=500)
+  # base case loop
   for v in var:    # cycles through variables listed in ascii file fl = var_list.txt
     nm = v.strip()
-    fc = 'go calcstats.jnl'+' '+ii+' '+jj+' '+nm
-    #print(fc)
+    fc = 'go calcstats.jnl'+' '+ii+' '+jj+' '+nm+' '+sdir    
+    pyferret.run(fc)
+  # subdaily loop
+  for v in subvar:    # cycles through variables listed in ascii file fl = var_list.txt
+    nm = v.strip()
+    fc = 'go calcstats_subd.jnl'+' '+ii+' '+jj+' '+nm+' '+subdir
     pyferret.run(fc)
   pyferret.stop()
 
@@ -33,26 +44,31 @@ def calcstatsferret_vector(ii,jj):
   fl = 'wind_vector_list.txt'
   l = open(fl,'r')
   var = l.readlines()
+  # source nertcdf dir
+  sdir='/storage/spark/chiodi/UW_4km_WRF_smoke_planner_met/daily_netcdf'   # soure netcdf daily files
+  subdir='/storage/spark/chiodi/UW_4km_WRF_smoke_planner_met/daily_netcdf/subdaily'   # soure netcdf daily files
   pyferret.start(quiet=True,verify=False,journal=False,memsize=500)
-  for v in var:    # cycles through variables listed in ascii file fl = var_list.txt
+  for v in var:    # cycles through variables listed in ascii file fl = wind_vector_list.txt
     nm = v.strip()
-    fc = 'go calcstats_vector.jnl'+' '+ii+' '+jj+' '+nm
-    #print(fc)
+    fc = 'go calcstats_vector.jnl'+' '+ii+' '+jj+' '+nm+' '+sdir
+    pyferret.run(fc)
+    fc = 'go calcstats_vector_subd.jnl'+' '+ii+' '+jj+' '+nm+' '+subdir
     pyferret.run(fc)
   pyferret.stop()
  
-def statsjson(ii,jj):
+def statsjson(ii,jj,ddir,odir):
   ii = str(ii)
   jj = str(jj)
   # file containing variable names (e.g. MH_MAX)
-  fl = 'var_list.txt'
+  fl = 'var_list_cat.txt'  # concatenation of var_list and subvar_list
   flv = 'wind_vector_list.txt'
   # root file name
   rn = 'i'+ii+'_j'+jj
-  # dir where the ascii climatological statistics file is
-  ddir = '/home/chiodi/FW/tool1/json/stats/'
-  # dir where stats json will reside
-  odir = '/home/chiodi/FW/tool1/json/stats/' 
+  # dir where the ascii climatological statistics file will be written to
+  #ddir = '/home/chiodi/UW_4km_WRF/stats/data/'
+  #print(ddir)
+  # dir where the final stats json will reside
+  #odir = '/home/chiodi/UW_4km_WRF/stats/data/' 
   # get lat lon;  ixlon jylat
   [lat,lon] = rlatlon(int(ii),int(jj))
   elev = rhgt(int(ii),int(jj))
@@ -71,14 +87,14 @@ def statsjson(ii,jj):
   point['grid_cell_elevation_in_meters'] = elev
   point['percentiles'] = {}
   point['windroses'] = {}
-  out = '/home/chiodi/FW/tool1/json/stats/json/i'+ii+'_j'+jj+'_stats.json'
+  out = odir+'i'+ii+'_j'+jj+'_stats.json'
   jf  = 'i'+ii+'_j'+jj+'_stats.json'
 
   for v in var:    # cycles through variables listed in ascii file fl = var_list.txt
     nm = v.strip()
     # name of climo-statitics file generated from (py)ferret scripts; e.g. w10_daytime_ave.i220.j36.txt
     csf = ddir+nm+'.i'+ii+'.j'+jj+'.txt'
-    print(csf)
+    #print(csf)
     # open the pre-calculated stats file (ascii)
     with open(csf) as f:
     # set Ferret to write "-999.90" to .txt files where data is missing. next line takes -999.90 -> None (python) -> Null (dump to json)     
@@ -290,7 +306,7 @@ def statsjson(ii,jj):
     point['percentiles'][nm][period][str(X[st+9][0])] = X[st+9][1]
     point['percentiles'][nm][period][str(X[st+10][0])] = X[st+10][1]
   l.close()
-  vec_periods = ['daytime','nighttime']
+  vec_periods = ['daytime','nighttime','lst_0500_0900','lst_1000_1500','lst_1600_2000']
   for v in vec: # now do w10 and tw
     nm1 = v.strip()
     for p in vec_periods:
@@ -298,7 +314,7 @@ def statsjson(ii,jj):
       nm2  = p.strip()
       nm = nm1+'_direction_'+nm2
       csf = ddir+nm+'.i'+ii+'.j'+jj+'.txt'
-      print(csf)
+      #print(csf)
       # open the pre-calculated stats file (ascii)
       point['windroses'][nm] = {}
       point['windroses'][nm]['annual'] = {} 
@@ -563,7 +579,7 @@ def statsjson(ii,jj):
   # jf is the json file name on its own, e.g. i200_j36_stats.json
   # aws cp json file  
   cmd = '/home/chiodi/bin/aws/aws s3 cp '+out+' '+'s3://airfire-data-exports/smoke-planner/uw-4km-wrf/'+jf
-  os.system(cmd)
+  os.system(cmd)  
 
   # remove the temporary ascii created by ferret
   for v in var:    # cycles through variables listed in ascii file fl = var_list.txt
@@ -571,7 +587,7 @@ def statsjson(ii,jj):
     # name of climo-statitics file generated from (py)ferret scripts; e.g. w10_daytime_ave.i220.j36.txt
     csf = ddir+nm+'.i'+ii+'.j'+jj+'.txt'
     cmd = 'rm '+' '+csf
-    os.system(cmd)
+    os.system(cmd)    
   for v in vec: # now do w10 and tw
     nm1 = v.strip()
     for p in vec_periods:
@@ -580,20 +596,22 @@ def statsjson(ii,jj):
       nm = nm1+'_direction_'+nm2
       csf = ddir+nm+'.i'+ii+'.j'+jj+'.txt'
       cmd = 'rm '+' '+csf
-      os.system(cmd)
+      os.system(cmd)   
 
 # start a log file
 lfn = 'stats_logfile.txt'
 lfid = open(lfn,'w+')
 now = datetime.datetime.now()
 lfid.write(str(now)+'\n')
+rdir = '/home/chiodi/smoke_planner/UW_4km_WRF/stats/'                    # working directory where this script resides
+wdir = '/storage/spark/chiodi/UW_4km_WRF_smoke_planner_met/stats_json/'  # where json files are saved locally
 # create the stats json files and cp to S3
-for ilon in range(90,251):            # ilon  90,251  previously 160,181
+for ilon in range(130,131):            # ilon  90,251 -> 251-405(6)  OWen 130, 195  
     lfid.write('ilon :'+str(ilon)+'\n')
-    for jlat in range(1,283):          # jlat   1,283 
+    for jlat in range(155,156):          # jlat   1,283                OWen 155, 245
      calcstatsferret(ilon,jlat)
      calcstatsferret_vector(ilon,jlat)
-     statsjson(ilon,jlat)
+     statsjson(ilon,jlat,rdir,wdir)
 # time stamp and close the logfile
 et = datetime.datetime.now() 
 lfid.write(str(et)+'\n')

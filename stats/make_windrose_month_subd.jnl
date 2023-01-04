@@ -60,8 +60,8 @@ let v = ($merid)_($period)_ave
 
 define sym tfilnm "($level)_direction_($period)" ! e.g. w10_direction_daytime
 
-!use /storage/spark/chiodi/PNW_4km_test_bed/wrf.daily.i($ii).j($jj).nc
-use ($source_dir)/wrf.daily.i($ii).j($jj).nc
+
+use ($source_dir)/wrf.subdaily.i($ii).j($jj).nc
 
 ! direction and speed:
 let rad = 180.0/3.1415926535897

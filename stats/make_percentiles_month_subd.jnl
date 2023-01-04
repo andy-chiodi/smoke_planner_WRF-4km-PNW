@@ -11,9 +11,7 @@ define sym jj "($2)"  ! 36
 define sym vn "($3)"  ! "fm1000_gridmet"
 define sym mn "($4)"  ! e.g. 1,2
 
-!use /storage/spark/chiodi/PNW_4km_test_bed/wrf.daily.i($ii).j($jj).nc
-
-use ($source_dir)/wrf.daily.i($ii).j($jj).nc
+use ($source_dir)/wrf.subdaily.i($ii).j($jj).nc
 
 let md = ($vn)
 
